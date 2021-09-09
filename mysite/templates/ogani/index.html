@@ -1,0 +1,276 @@
+{% extends 'ogani/base.html'%}
+{%load static%}
+{%block content %}
+
+
+<section class="hero">
+<div class="container">
+<div class="row">
+<div class="col-lg-3">
+<div class="hero__categories">
+<div class="hero__categories__all">
+<i class="fa fa-bars"></i>
+<span>All departments</span>
+</div>
+<ul>
+    {% for cat in categories %}
+<li><a href="#">{{cat.name}}</a></li>
+    {% endfor%}
+
+</ul>
+</div>
+</div>
+<div class="col-lg-9">
+<div class="hero__search">
+<div class="hero__search__form">
+<form action="#">
+<div class="hero__search__categories">
+All Categories
+<span class="arrow_carrot-down"></span>
+</div>
+<input type="text" placeholder="What do yo u need?">
+<button type="submit" class="site-btn">SEARCH</button>
+</form>
+</div>
+<div class="hero__search__phone">
+<div class="hero__search__phone__icon">
+<i class="fa fa-phone"></i>
+</div>
+<div class="hero__search__phone__text">
+<h5>+65 11.188.888</h5>
+<span>support 24/7 time</span>
+</div>
+</div>
+</div>
+<div class="hero__item set-bg" data-setbg="{% static 'ogani/img/product/fr.jpg' %}">
+<div class="hero__text">
+<span>FRUIT FRESH</span>
+<h2>Fruits <br />100% Organic</h2>
+<p>Free Pickup and Delivery Available</p>
+<a href="{% url 'shop' %}" class="primary-btn">SHOP NOW</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<section class="categories">
+<div class="container">
+<div class="row">
+<div class="categories__slider owl-carousel">
+ {% for cat in categories %}
+<div class="col-lg-3">
+<div class="categories__item set-bg" data-setbg="/media/{{cat.image}}">
+<h5><a href="#">{{cat.name}}</a></h5>
+</div>
+</div>
+    {% endfor %}
+
+</div>
+</div>
+</div>
+
+</section>
+
+
+<section class="featured spad">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<div class="section-title">
+<h2>Featured Product</h2>
+</div>
+
+<div class="featured__controls">
+<ul>
+<li class="active" data-filter="*">All</li>
+    {% for cat in categories %}
+<li data-filter="{{cat.id}}">{{cat.name}}</li>
+{%endfor%}
+
+</ul>
+</div>
+</div>
+</div>
+    {% for cat in categories %}
+<div class="row featured__filter">
+
+    {% for pr in products %}
+    {% if cat.id == pr.category_id%}
+
+<div class="col-lg-3 col-md-4 col-sm-6 mix oranges {{cat.id}}">
+<div class="featured__item">
+<div class="featured__item__pic set-bg" data-setbg="/media/{{pr.image}}">
+<ul class="featured__item__pic__hover">
+<li><a href="#"><i class="fa fa-heart"></i></a></li>
+<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+</ul>
+</div>
+<div class="featured__item__text">
+<h6><a href="#">{{pr.name}}</a></h6>
+<h5>${{pr.price}}</h5>
+</div>
+</div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+</div>
+  {% endfor %}
+</div>
+</section>
+
+
+<div class="banner">
+<div class="container">
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6">
+<div class="banner__pic">
+<img src="{% static 'ogani/img/banner/xbanner-1.jpg.pagespeed.ic.-NRyTdVwji.jpg' %}" alt="">
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6">
+<div class="banner__pic">
+<img src="{% static 'ogani/img/banner/xbanner-2.jpg.pagespeed.ic.pSCK_iOvxr.jpg' %}" alt="">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<section class="from-blog spad">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<div class="section-title from-blog__title">
+<h2>From The Blog</h2>
+</div>
+</div>
+</div>
+<div class="row">
+    {% for bl in blog %}
+    {% if forloop.counter0 < 3 %}
+<div class="col-lg-4 col-md-4 col-sm-6">
+<div class="blog__item">
+<div class="blog__item__pic">
+<img src="/media/{{bl.image}}" alt="">
+</div>
+<div class="blog__item__text">
+<ul>
+<li><i class="fa fa-calendar-o"></i> {{bl.created_at}}</li>
+<li><i class="fa fa-comment-o"></i> 5</li>
+</ul>
+<h5><a href="{% url 'blog_details' blog_id=bl.id %}">{{bl.title}}</a></h5>
+<p>{{bl.description}} </p>
+</div>
+</div>
+</div>
+    {%endif%}
+    {%endfor%}
+
+</div>
+</div>
+</section>
+
+<section class="expert" id="expert">
+<div class="container">
+<!--    latest products-->
+<div class="row">
+<div class="col-lg-12">
+    <div class="section-title from-blog__title">
+    <h2>Latest  <span>P</span>roducts</h2>
+    </div>
+</div>
+</div>
+    <div class="row">
+    {%for lat in latest_products%}
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="box data-aos= aos-init" data-aos="fade-up" data-aos-offset="300" data-aos-easing="ease-in-sine">
+                <div class="imgBx">
+                    <img src="/media/{{lat.image}}" alt="">
+                </div>
+                <div class="blog__item__text">
+<ul>
+<li><i class="fa fa-calendar-o"></i>  {{lat.created_at}}</li>
+</ul>
+<h5><a href="#">{{lat.name}}</a></h5>
+
+</div>
+
+            </div>
+            </div>
+{% endfor %}
+    </div>
+
+
+<!--review products-->
+<div class="row">
+<div class="col-lg-12">
+    <div class="section-title from-blog__title">
+    <h2>Review  <span>P</span>roducts</h2>
+    </div>
+        </div>
+        </div>
+    <div class="row">
+    {%for view in pr_view%}
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="box aos-init" data-aos="fade-left" data-aos-offset="300" data-aos-easing="ease-in-sine">
+                <div class="imgBx">
+                    <img src="/media/{{view.image}}" alt="">
+                </div>
+                <div class="blog__item__text">
+<ul>
+<li><i class="fa fa-calendar-o"></i>  {{view.view}}</li>
+</ul>
+<h5><a href="#">{{view.name}}</a></h5>
+
+</div>
+            </div>
+            </div>
+{% endfor %}
+    </div>
+
+
+<!--  Top Rated Products     -->
+    <div class="row">
+<div class="col-lg-12">
+   <div class="section-title from-blog__title">
+    <div class="section-title from-blog__title">
+    <h2>Top Rated Products</h2>
+    </div>
+    </div>
+
+        </div>
+        </div>
+    <div class="row">
+    {%for price in pr_price%}
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="box data-aos= aos-init" data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine">
+                <div class="imgBx">
+                    <img src="/media/{{price.image}}" alt="">
+                </div>
+                <div class="blog__item__text">
+<ul>
+<li><i class="fa fa-calendar-o"></i> $ {{price.price}}</li>
+</ul>
+<h5><a href="#">{{price.name}}</a></h5>
+
+</div>
+            </div>
+            </div>
+{% endfor %}
+
+        </div>
+        </div>
+    </section>
+
+
+{% endblock content %}
+
+
+
+

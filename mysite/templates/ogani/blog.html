@@ -1,0 +1,186 @@
+{% extends 'ogani/base.html'%}
+{%load static%}
+{%block content %}
+
+
+<section class="hero hero-normal">
+<div class="container">
+<div class="row">
+<div class="col-lg-3">
+<div class="hero__categories">
+<div class="hero__categories__all">
+<i class="fa fa-bars"></i>
+<span>All departments</span>
+</div>
+<ul>
+    {% for cat in categories%}
+<li><a href="#"> {{cat.name}}</a></li>
+    {% endfor%}
+
+</ul>
+</div>
+</div>
+
+<div class="col-lg-9">
+<div class="hero__search">
+<div class="hero__search__form">
+
+    <form action="{% url 'shop' %}" method="get">
+        {% csrf_token %}
+    <div class="hero__search__categories">
+    All Categories
+    <span class="arrow_carrot-down"></span>
+    </div>
+    <input type="text" name="search" placeholder="What do yo u need?">
+    <button type="submit" class="site-btn">SEARCH</button>
+    </form>
+
+</div>
+<div class="hero__search__phone">
+<div class="hero__search__phone__icon">
+<i class="fa fa-phone"></i>
+</div>
+<div class="hero__search__phone__text">
+<h5>+65 11.188.888</h5>
+<span>support 24/7 time</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'ogani/img/breadcrumb.jpg' %}">
+<div class="container">
+<div class="row">
+<div class="col-lg-12 text-center">
+<div class="breadcrumb__text">
+<h2>Blog</h2>
+<div class="breadcrumb__option">
+<a href="{% url 'home' %}">Home</a>
+<span>Blog</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<section class="blog spad">
+<div class="container">
+<div class="row">
+<div class="col-lg-4 col-md-5">
+<div class="blog__sidebar">
+<div class="blog__sidebar__search">
+
+<form action="{% url 'blog'  %}" method="get">
+    {% csrf_token%}
+
+<input style="width:100%" type="text" name="search" placeholder="Search...">
+<button type="submit"><span class="icon_search"></span></button>
+</form>
+
+
+</div>
+
+<div class="blog__sidebar__item">
+<h4>Categories</h4>
+<ul>
+<li><a href="#">All</a></li>
+<li><a href="#">Beauty (20)</a></li>
+<li><a href="#">Food (5)</a></li>
+<li><a href="#">Life Style (9)</a></li>
+<li><a href="#">Travel (10)</a></li>
+</ul>
+</div>
+
+<div class="blog__sidebar__item">
+<h4>Recent News</h4>
+<ul>
+    {% for bl in blogs%}
+    {% if forloop.counter0 < 3 %}
+<li>
+    <a href="#"></a>
+    <div class="blog__sidebar__recent__item__pic">
+<img style="max-width: 50%"  src="/media/{{bl.image}}" alt="">
+        <div class="blog__sidebar__recent__item__text">
+<h6>{{bl.title}}<br /> Protect The Liver</h6>
+<span>{{bl.created_at}}</span>
+</div>
+</div>
+
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+</div>
+
+
+<div class="blog__sidebar__item">
+<h4>Search By</h4>
+<div class="blog__sidebar__item__tags">
+<a href="#">Apple</a>
+<a href="#">Beauty</a>
+<a href="#">Vegetables</a>
+<a href="#">Fruit</a>
+<a href="#">Healthy Food</a>
+<a href="#">Lifestyle</a>
+</div>
+</div>
+
+</div>
+</div>
+<div class="col-lg-8 col-md-7">
+<div class="row">
+    {% for bl in page.object_list%}
+<div class="col-lg-6 col-md-6 col-sm-6">
+<div class="blog__item">
+<div class="blog__item__pic">
+<img src="/media/{{bl.image}}" alt="">
+</div>
+<div class="blog__item__text">
+<ul>
+<li><i class="fa fa-calendar-o"></i> {{bl.created_at}}</li>
+<li><i class="fa fa-comment-o"></i>{{bl.view}}</li>
+</ul>
+<h5><a href="{% url 'blog_details' blog_id=bl.id %}">{{bl.title}}</a></h5>
+<p>{{bl.description}} </p>
+<a href="{% url 'blog_details' blog_id=bl.id%}" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
+</div>
+</div>
+</div>
+{% endfor %}
+
+<div class="col-lg-12">
+    <div class="product__pagination blog__pagination">
+<form method="get" id="id_page_form">
+    <input type="hidden" id="id_page" name="page" value="{{page.number}}">
+
+</form>
+ {% if page.has_previous %}
+<a href="#"  onclick="get_page_list({{page.previous_page_number}})"><i class="fa fa-angle-left"></i></a>
+        {% endif%}
+<a href="#">1</a>
+<a href="#">2</a>
+   {% if page.has_next %}
+<a href="#" onclick="get_page_list({{page.next_page_number}})"><i class="fa fa-angle-right"></i></a>
+    {% endif%}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+ <script>
+   function get_page_list(page){
+   p=document.getElementById("id_page");
+   p.value=page;
+   document.getElementById("id_page_form").submit();
+   }
+ </script>
+
+{% endblock content %}
